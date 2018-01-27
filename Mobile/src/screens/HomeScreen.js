@@ -71,6 +71,10 @@ class HomeScreen extends React.Component {
           {this.state.connection.text}
         </Text>
         <Button
+          title="Settings"
+          onPress={() => this.props.navigation.navigate(ROUTE_NAMES.SETTINGS)}
+        />
+        <Button
           title="Generate QR Code"
           onPress={() => this.props.navigation.navigate(ROUTE_NAMES.QR_CODE)}
         />

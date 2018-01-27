@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "postinstall": "truffle init && solium --i",
+    "init": "truffle init && solium --i",
     "start": "testrpc",
     "test": "solium --dir contracts && truffle test",
-    "migrate": "truffle migrate",
+    "migrate": "truffle migrate"
   },
   "dependencies": {
     "web3": "1.0.0-beta.18"

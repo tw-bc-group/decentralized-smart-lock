@@ -1,4 +1,4 @@
-# Decentrelized Smart Lock - Mobile Application
+# Decentrelized Smart Lock - Contract
 
 ## Environment
 
@@ -8,6 +8,7 @@
 ## Get Started
 
 1. `npm install`
+1. `npm run init` when you first start this project.
 1. `npm start`
 
 ## Test

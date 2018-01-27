@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode';
-import CONFIG from '../config.json';
-import Web3 from 'web3';
+
+import blockchain from '../utilities/blockchain';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,15 +18,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const msg = Web3.utils.toHex(Web3.utils.sha3(CONFIG.ACCOUNT.ADDRESS));
-const data = {
-  'msg': msg,
-  'sig': Web3.utils.toHex(Web3.eth.sign(msg, CONFIG.ACCOUNT.PRIVATE_KEY)),
-};
-
 class QRCodeScreen extends React.Component {
   state = {
-    data: JSON.stringify(data),
+    data: blockchain.getSignature(),
   };
 
   render() {
@@ -35,11 +29,8 @@ class QRCodeScreen extends React.Component {
         <Text>This is QR Code Screen.</Text>
         <Text>{this.state.data}</Text>
         <QRCode
+          size={300}
           value={this.state.data}
-        />
-        <Button
-          title="Refresh"
-          onPress={() => this.setState({ data: JSON.stringify(data) })}
         />
         <Button
           title="Back"

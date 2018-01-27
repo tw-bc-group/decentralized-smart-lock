@@ -6,10 +6,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Web3 from 'web3';
 
 import { ROUTE_NAMES } from '../routes';
-import CONFIG from '../config.json';
+import blockchain from '../utilities/blockchain';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,12 +48,7 @@ class HomeScreen extends React.Component {
 
   connect = () => {
     this.setState({ connection: CONNECTION.CONNECTING });
-    if (this.web3 && this.web3.currentProvider) {
-      this.web3 = new Web3(this.web3.currentProvider);
-    } else {
-      this.web3 = new Web3(new Web3.providers.HttpProvider(CONFIG.BLOCKCHAIN.ADDRESS));
-    }
-    this.web3.eth.net.isListening().then((isConnected) => {
+    blockchain.connect().then((isConnected) => {
       this.setState({
         connection: isConnected ? CONNECTION.SUCCESS : CONNECTION.FAILED,
       });

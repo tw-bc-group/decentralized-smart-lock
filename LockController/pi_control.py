@@ -1,4 +1,4 @@
-import pi_carema
+import pi_camera
 import contract
 import lock_control
 import json

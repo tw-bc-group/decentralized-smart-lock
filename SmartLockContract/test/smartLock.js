@@ -1,4 +1,4 @@
-var smartLock = artifacts.require("./SmartLock.sol");
+var SmartLock = artifacts.require("./SmartLock.sol");
 
 contract('SmartLock', function(accounts){
 	it("landlord should register successfully with his or her lock address and rent money", function(){
@@ -11,15 +11,15 @@ contract('SmartLock', function(accounts){
 			smartLock = instance;
 			return smartLock.registerLandlord(lockAddress, rentMoneyPerDay, {from: landlord});
 		}).then(function(){
-			return smartLock.isLandlord(landlord, lockAddress);
+			return smartLock.isLandlord(landlord);
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "if landlord has registered successfully.");
 		}).then(function(){
-			return smartLock.isLockAvaliable(lockAddress);
+			return smartLock.isLockAvaliable();
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "if lock has been registered and avaliable.");
 		}).then(function(){
-			return smartLock.getRentMoneyPerDay(lockAddress);
+			return smartLock.getRentMoneyPerDay();
 		}).then(function(res){
 			assert.equal(res.valueOf(), rentMoneyPerDay, "if rent money has been set.")
 		});

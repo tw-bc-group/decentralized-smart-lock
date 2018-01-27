@@ -1,15 +1,11 @@
-from web3 import Web3, HTTPProvider, IPCProvider, eth, contract
-import pprint
-import sys
+from web3 import Web3, HTTPProvider, contract
 
-rentMontyPerDay = 1
-lockAddress = "lockAddress"
 node_address = 'https://ropsten.etherscan.io/address'
-contractAddress = '0x1907029AabE75Df630517D469A72d7A5405724e6'
+contractAddress = '0x7c40f37632a483426428fafd6bd7e38f44001f61'
 
 w3 = Web3(HTTPProvider(node_address))
 
-abi = [
+ABI = [
     {
         "constant": True,
         "inputs": [
@@ -19,20 +15,6 @@ abi = [
             }
         ],
         "name": "isLandlord",
-        "outputs": [
-            {
-                "name": "res",
-                "type": "bool"
-            }
-        ],
-        "payable": False,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": True,
-        "inputs": [],
-        "name": "canIOpenThisDoor",
         "outputs": [
             {
                 "name": "res",
@@ -76,9 +58,41 @@ abi = [
         "type": "function"
     },
     {
+        "constant": False,
+        "inputs": [],
+        "name": "transferRentMoney",
+        "outputs": [],
+        "payable": False,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "constant": True,
         "inputs": [],
         "name": "amIRentedThisRoom",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "bool"
+            }
+        ],
+        "payable": False,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": True,
+        "inputs": [
+            {
+                "name": "sha3Message",
+                "type": "bytes"
+            },
+            {
+                "name": "signedStr",
+                "type": "bytes"
+            }
+        ],
+        "name": "canIOpenThisDoor",
         "outputs": [
             {
                 "name": "res",
@@ -138,10 +152,66 @@ abi = [
         ],
         "name": "RegisterLandlord",
         "type": "event"
+    },
+    {
+        "anonymous": False,
+        "inputs": [
+            {
+                "indexed": False,
+                "name": "renter",
+                "type": "address"
+            },
+            {
+                "indexed": False,
+                "name": "totalRentMoneyFromRenter",
+                "type": "uint256"
+            },
+            {
+                "indexed": False,
+                "name": "lastDate",
+                "type": "uint256"
+            }
+        ],
+        "name": "WantToRent",
+        "type": "event"
+    },
+    {
+        "anonymous": False,
+        "inputs": [
+            {
+                "indexed": False,
+                "name": "landlord",
+                "type": "address"
+            },
+            {
+                "indexed": False,
+                "name": "totalRentMoneyFromRenter",
+                "type": "uint256"
+            }
+        ],
+        "name": "TransferRentMoney",
+        "type": "event"
+    },
+    {
+        "anonymous": False,
+        "inputs": [
+            {
+                "indexed": False,
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "indexed": False,
+                "name": "now",
+                "type": "uint256"
+            }
+        ],
+        "name": "ClearContract",
+        "type": "event"
     }
 ]
 
-contract = w3.eth.contract(address=contractAddress, contract_name='SmartLock', abi=abi)
+contract = w3.eth.contract(address=contractAddress, contract_name='SmartLock', abi=ABI)
 
 
 def verify_is_lock_avaliable():

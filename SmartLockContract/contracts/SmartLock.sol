@@ -9,11 +9,13 @@ contract SmartLock {
 		uint256 rentMoneyPerDay;
 		address renter;
 		uint256 totalRentMoneyFromRenter;
+		uint256 lastDate;
 	}
 	
 	SmartLockContract slContract;
 
 	event RegisterLandlord(address landlord, bytes32 lockAddress, uint256 rentMoneyPerDay);
+	event WantToRent(address renter, uint256 totalRentMoneyFromRenter, uint256 lastDate);
 
 	modifier onlyLockIsAvailable { 
 		require(isLockAvailiable());
@@ -25,12 +27,23 @@ contract SmartLock {
 		_; 
 	}
 
+	modifier onlyLandlord(address landlord) { 
+		require(isLandlord(landlord));
+		_; 
+	}
+
+	modifier onlyRenter { 
+		require(amIRentedThisRoom());
+		_; 
+	}
+	
+
 	function isLandlord(address landlord) constant returns(bool res) {
 		return slContract.landlord == landlord;
 	}
 	
 	function isLockAvailiable() constant returns(bool res) {
-		return slContract.renter == slContract.landlord;
+		return slContract.lastDate < now;
 	}
 
 	function registerLandlord(bytes32 lockAddress, uint256 rentMoneyPerDay) {
@@ -40,7 +53,8 @@ contract SmartLock {
 				lockAddress: lockAddress,
 				rentMoneyPerDay: rentMoneyPerDay,
 				renter: landlord,
-				totalRentMoneyFromRenter: 0
+				totalRentMoneyFromRenter: 0,
+				lastDate: 0
 			});
 
 		RegisterLandlord(landlord, lockAddress, rentMoneyPerDay);
@@ -56,6 +70,9 @@ contract SmartLock {
 
 		slContract.renter = renter;
 		slContract.totalRentMoneyFromRenter = totalRentMoneyFromRenter;
+		slContract.lastDate = now + (totalRentMoneyFromRenter / slContract.rentMoneyPerDay) * 1 days;
+
+		WantToRent(slContract.renter, slContract.totalRentMoneyFromRenter, slContract.lastDate);
 	}
 
 	function() payable {
@@ -68,6 +85,18 @@ contract SmartLock {
 	}
 
 	function canIOpenThisDoor(bytes memory sha3Message, bytes memory signedStr) constant returns(bool res) {
-		return Decode.decode(sha3Message, signedStr) == slContract.renter;
+		return Decode.decode(sha3Message, signedStr) == slContract.renter && now < slContract.lastDate;
+	}
+	
+	function transferRentMoney() onlyLandlord(msg.sender) onlyLockIsAvailable{
+		address landlord = msg.sender;
+		landlord.transfer(slContract.totalRentMoneyFromRenter);
+		clearContract();
+	}
+	
+	function clearContract() returns(bool res) {
+		slContract.totalRentMoneyFromRenter = 0;
+		slContract.renter = msg.sender;
+		slContract.lastDate = 0;
 	}
 }

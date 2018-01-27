@@ -1,0 +1,4 @@
+picamera
+zbarlight
+pycrypto
+requests

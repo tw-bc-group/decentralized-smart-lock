@@ -6,7 +6,7 @@ lockAddress = "lockAddress"
 rentMontyPerDay = 1
 node_address = sys.argv[1] if sys.argv[1] else 'http://192.168.8.111:8545'
 w3 = Web3(HTTPProvider(node_address))
-contractAddress = '0xcd4ea7bb234224cda215014c6ec26600a34a7cb2'
+contractAddress = '0x7c40f37632a483426428fafd6bd7e38f44001f61'
 
 abi = [
     {
@@ -149,3 +149,6 @@ def verify_is_lock_avaliable():
 
 def can_open_door(args):
     return contract.call().canIOpenThisDoor()
+
+
+verify_is_lock_avaliable()

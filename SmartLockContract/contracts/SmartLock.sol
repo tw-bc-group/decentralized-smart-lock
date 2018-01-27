@@ -38,7 +38,6 @@ contract SmartLock {
 		require(amIRentedThisRoom());
 		_; 
 	}
-	
 
 	function isLandlord(address landlord) constant returns(bool res) {
 		return slContract.landlord == landlord;
@@ -46,6 +45,15 @@ contract SmartLock {
 	
 	function isLockAvailiable() constant returns(bool res) {
 		return slContract.lastDate < now;
+	}
+
+	function amIRentedThisRoom() constant returns(bool res) {
+		address addressNeedToVerify = msg.sender;
+		return addressNeedToVerify == slContract.renter;
+	}
+
+	function getRentMoneyPerDay() constant returns(uint256 rentMoneyPerDay) {
+		return slContract.rentMoneyPerDay;
 	}
 
 	function registerLandlord(bytes32 lockAddress, uint256 rentMoneyPerDay) {
@@ -62,8 +70,8 @@ contract SmartLock {
 		RegisterLandlord(landlord, lockAddress, rentMoneyPerDay);
 	}
 
-	function getRentMoneyPerDay() constant returns(uint256 rentMoneyPerDay) {
-		return slContract.rentMoneyPerDay;
+	function() payable {
+		wantToRent();
 	}
 
 	function wantToRent() onlyLockIsAvailable notLandlord(msg.sender) payable {
@@ -77,15 +85,6 @@ contract SmartLock {
 		WantToRent(slContract.renter, slContract.totalRentMoneyFromRenter, slContract.lastDate);
 	}
 
-	function() payable {
-		wantToRent();
-	}
-
-	function amIRentedThisRoom() constant returns(bool res) {
-		address addressNeedToVerify = msg.sender;
-		return addressNeedToVerify == slContract.renter;
-	}
-
 	function canIOpenThisDoor(bytes memory sha3Message, bytes memory signedStr) constant returns(bool res) {
 		return Decode.decode(sha3Message, signedStr) == slContract.renter && now < slContract.lastDate;
 	}
@@ -95,7 +94,7 @@ contract SmartLock {
 		landlord.transfer(slContract.totalRentMoneyFromRenter);
 
 		TransferRentMoney(landlord, slContract.totalRentMoneyFromRenter);
-		
+
 		clearContract();
 	}
 	

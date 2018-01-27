@@ -1,6 +1,6 @@
 from web3 import Web3, HTTPProvider, contract
 
-node_address = 'https://ropsten.etherscan.io/address'
+node_address = 'http://192.168.8.111:8545'
 contractAddress = '0x7c40f37632a483426428fafd6bd7e38f44001f61'
 
 w3 = Web3(HTTPProvider(node_address))

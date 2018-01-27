@@ -1,3 +1,6 @@
+/* eslint-disable import/first */
+import './global';
+
 import { StackNavigator } from 'react-navigation';
 import { Constants } from 'expo';
 

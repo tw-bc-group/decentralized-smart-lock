@@ -2,11 +2,12 @@ from web3 import Web3, HTTPProvider, IPCProvider, eth, contract
 import pprint
 import sys
 
-lockAddress = "lockAddress"
 rentMontyPerDay = 1
-node_address = sys.argv[1] if sys.argv[1] else 'http://192.168.8.111:8545'
+lockAddress = "lockAddress"
+node_address = 'https://ropsten.etherscan.io/address'
+contractAddress = '0x1907029AabE75Df630517D469A72d7A5405724e6'
+
 w3 = Web3(HTTPProvider(node_address))
-contractAddress = '0x7c40f37632a483426428fafd6bd7e38f44001f61'
 
 abi = [
     {
@@ -148,7 +149,4 @@ def verify_is_lock_avaliable():
 
 
 def can_open_door(args):
-    return contract.call().canIOpenThisDoor()
-
-
-verify_is_lock_avaliable()
+    return contract.call().canIOpenThisDoor(args.msg, args.sig)

@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode';
+import CONFIG from '../config.json';
+import Web3 from 'web3';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,8 +19,13 @@ const styles = StyleSheet.create({
 });
 
 class QRCodeScreen extends React.Component {
+  msg = Web3.toHex(Web3.sha3(CONFIG.ACCOUNT.ADDRESS));
+  data = {
+    'msg': this.msg,
+    'sig': Web3.toHex(Web3.eth.sign(CONFIG.ACCOUNT.PRIVATE_KEY, this.msg)),
+  };
   state = {
-    data: Date.now().toString(),
+      data: JSON.stringify(data),
   };
 
   render() {

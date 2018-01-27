@@ -2,8 +2,14 @@ import pi_camera
 import contract
 import lock_control
 import json
+import signal
 from time import sleep
 
+def signal_handler(signum, frame):
+    print('stop pressing')
+    exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 while True:
     try:

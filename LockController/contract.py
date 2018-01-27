@@ -1,12 +1,9 @@
 from web3 import Web3, HTTPProvider, IPCProvider, eth, contract
 import pprint
-import json
-
-# import pi_camera
 
 lockAddress = "lockAddress"
 rentMontyPerDay = 1
-node_address = 'http://localhost:8545'
+node_address = 'http://10.16.70.46:8545'
 w3 = Web3(HTTPProvider(node_address))
 contractAddress = '0xcd4ea7bb234224cda215014c6ec26600a34a7cb2'
 
@@ -142,23 +139,12 @@ abi = [
     }
 ]
 
-lockContract = w3.eth.contract(address=contractAddress, contract_name='SmartLock', abi=abi)
+contract = w3.eth.contract(address=contractAddress, contract_name='SmartLock', abi=abi)
 
 
-def verifyIsLockAvaliable():
-    print(lockContract.call().isLockAvailiable())
+def verify_is_lock_avaliable():
+    print(contract.call().isLockAvailiable())
 
 
-verifyIsLockAvaliable()
-
-
-def verifyCanIOpenThisDoor():
-    # codes = pi_camera.capture_img()
-    # args = json.loads(codes, encoding='utf8')
-
-    # waiting for contract update and change the method
-    # return lockContract.call().verifyRenter(args.sig)
-    print(lockContract.call().canIOpenThisDoor())
-
-
-verifyCanIOpenThisDoor()
+def can_open_door():
+    return contract.call().canIOpenThisDoor()

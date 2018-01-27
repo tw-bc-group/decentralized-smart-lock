@@ -18,14 +18,15 @@ const styles = StyleSheet.create({
   },
 });
 
+const msg = Web3.utils.toHex(Web3.utils.sha3(CONFIG.ACCOUNT.ADDRESS));
+const data = {
+  'msg': msg,
+  'sig': Web3.utils.toHex(Web3.eth.sign(msg, CONFIG.ACCOUNT.PRIVATE_KEY)),
+};
+
 class QRCodeScreen extends React.Component {
-  msg = Web3.utils.toHex(Web3.utils.sha3(CONFIG.ACCOUNT.ADDRESS));
-  data = {
-    msg,
-    'sig': Web3.utils.toHex(Web3.eth.sign(msg, CONFIG.ACCOUNT.PRIVATE_KEY)),
-  };
   state = {
-      data: JSON.stringify(data),
+    data: JSON.stringify(data),
   };
 
   render() {
@@ -38,7 +39,7 @@ class QRCodeScreen extends React.Component {
         />
         <Button
           title="Refresh"
-          onPress={() => this.setState({ data: Date.now().toString() })}
+          onPress={() => this.setState({ data: JSON.stringify(data) })}
         />
         <Button
           title="Back"

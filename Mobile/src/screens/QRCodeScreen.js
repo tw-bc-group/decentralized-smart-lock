@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
 });
 
 class QRCodeScreen extends React.Component {
-  msg = Web3.toHex(Web3.sha3(CONFIG.ACCOUNT.ADDRESS));
+  msg = Web3.utils.toHex(Web3.utils.sha3(CONFIG.ACCOUNT.ADDRESS));
   data = {
     'msg': this.msg,
-    'sig': Web3.toHex(Web3.eth.sign(CONFIG.ACCOUNT.PRIVATE_KEY, this.msg)),
+    'sig': Web3.utils.toHex(Web3.eth.sign(this.msg, CONFIG.ACCOUNT.PRIVATE_KEY)),
   };
   state = {
       data: JSON.stringify(data),

@@ -23,5 +23,8 @@ while True:
             sleep(3)
         else:
             print('no premission ...')
+    except KeyboardInterrupt:
+        print('Good bye')
+        exit(0)
     except:
         print('some error ...')

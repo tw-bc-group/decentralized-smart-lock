@@ -3,7 +3,7 @@ import pprint
 
 lockAddress = "lockAddress"
 rentMontyPerDay = 1
-node_address = 'http://10.16.70.46:8545'
+node_address = 'http://192.168.8.111:8545'
 w3 = Web3(HTTPProvider(node_address))
 contractAddress = '0xcd4ea7bb234224cda215014c6ec26600a34a7cb2'
 

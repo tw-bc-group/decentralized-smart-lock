@@ -2,11 +2,17 @@ import pi_camera
 import contract
 import lock_control
 import json
+from time import sleep
 
 
-codes = pi_camera.capture_img()
-args = json.loads(codes, encoding='utf8')
+while True:
+    codes = pi_camera.capture_img()
+    args = json.loads(codes, encoding='utf8')
 
-
-if contract.can_open_door():
-    lock_control.open_lock()
+    print('check can open door, args: %s' % codes)
+    if contract.can_open_door(args):
+        print('open door ...')
+        lock_control.open_lock()
+        sleep(3)
+    else:
+        print('no premission ...')

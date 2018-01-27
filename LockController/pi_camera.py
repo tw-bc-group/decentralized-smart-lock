@@ -18,7 +18,7 @@ def capture_img():
 
             if codes:
                 print('return QR codes: %s' % codes)
-                return codes
+                return ''.join(str(e) for e in codes)
 
 
 def analyse_img(img):
@@ -32,5 +32,3 @@ def analyse_img(img):
     print('QR codes: %s' % codes)
 
     return codes
-
-

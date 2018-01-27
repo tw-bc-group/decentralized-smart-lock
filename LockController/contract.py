@@ -1,9 +1,10 @@
 from web3 import Web3, HTTPProvider, IPCProvider, eth, contract
 import pprint
+import sys
 
 lockAddress = "lockAddress"
 rentMontyPerDay = 1
-node_address = 'http://192.168.8.111:8545'
+node_address = sys.argv[1] if sys.argv[1] else 'http://192.168.8.111:8545'
 w3 = Web3(HTTPProvider(node_address))
 contractAddress = '0xcd4ea7bb234224cda215014c6ec26600a34a7cb2'
 
@@ -146,5 +147,5 @@ def verify_is_lock_avaliable():
     print(contract.call().isLockAvailiable())
 
 
-def can_open_door():
+def can_open_door(args):
     return contract.call().canIOpenThisDoor()

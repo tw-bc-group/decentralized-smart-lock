@@ -7,17 +7,30 @@ contract SmartLock {
 		bytes32 lockAddress;
 		uint256 rentMoneyPerDay;
 		address renter;
+		uint256 totalRentMoneyFromRenter;
 	}
 	
 	SmartLockContract slContract;
 
 	event RegisterLandlord(address landlord, bytes32 lockAddress, uint256 rentMoneyPerDay);
 
+	modifier onlyLockIsAvailable { 
+		require(isLockAvailiable());
+		_; 
+	}
+
+	modifier notLandlord(address validateAddress) { 
+		require(!isLandlord(validateAddress));
+		_; 
+	}
+	
+	
+
 	function isLandlord(address landlord) constant returns(bool res) {
 		return slContract.landlord == landlord;
 	}
 	
-	function isLockAvaliable() constant returns(bool res) {
+	function isLockAvailiable() constant returns(bool res) {
 		return slContract.renter == slContract.landlord;
 	}
 
@@ -27,7 +40,8 @@ contract SmartLock {
 				landlord: landlord,
 				lockAddress: lockAddress,
 				rentMoneyPerDay: rentMoneyPerDay,
-				renter: landlord
+				renter: landlord,
+				totalRentMoneyFromRenter: 0
 			});
 
 		RegisterLandlord(landlord, lockAddress, rentMoneyPerDay);
@@ -35,5 +49,22 @@ contract SmartLock {
 
 	function getRentMoneyPerDay() constant returns(uint256 rentMoneyPerDay) {
 		return slContract.rentMoneyPerDay;
+	}
+
+	function wantToRent() onlyLockIsAvailable notLandlord(msg.sender) payable {
+		address renter = msg.sender;
+		uint256 totalRentMoneyFromRenter = msg.value;
+
+		slContract.renter = renter;
+		slContract.totalRentMoneyFromRenter = totalRentMoneyFromRenter;
+	}
+
+	function() payable {
+		wantToRent();
+	}
+
+	function amIRentedThisRoom() constant returns(bool res) {
+		address addressNeedToVerify = msg.sender;
+		return addressNeedToVerify == slContract.renter;
 	}
 }

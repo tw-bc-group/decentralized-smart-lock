@@ -34,4 +34,3 @@ def analyse_img(img):
     return codes
 
 
-capture_img()

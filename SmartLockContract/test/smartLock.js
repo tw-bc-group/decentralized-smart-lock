@@ -46,12 +46,44 @@ contract('SmartLock', function(accounts){
 		}).then(function(res){
 			assert.equal(res.valueOf(), rentMoneyPerDay, "get rent money.");
 		}).then(function(){
-			// smartLock.wantToRent({from: renter, value: totalRentMoney});
 			web3.eth.sendTransaction({from: renter, to: smartLock.address, value: totalRentMoney});
 		}).then(function(){
 			return smartLock.amIRentedThisRoom({from: renter});
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "renter rented this room successfully.");
+		});
+	});
+
+	it("renter can open the door if he or she has paid for it.", function(){
+		var smartLock;
+		var landlord = accounts[0];
+		var lockAddress = "lock_address";
+		var rentMoneyPerDay = web3.toWei(1, 'ether');
+		var renter = accounts[1];
+		var totalRentMoney = web3.toWei(2, 'ether');
+		var invalidRenter = accounts[2];
+
+		return SmartLock.new().then(function(instance){
+			smartLock = instance;
+			return smartLock.registerLandlord(lockAddress, rentMoneyPerDay, {from: landlord});
+		}).then(function(){
+			return smartLock.isLockAvailiable();
+		}).then(function(res){
+			assert.equal(res.valueOf(), true, "the room is availiable.");
+		}).then(function(){
+			return smartLock.getRentMoneyPerDay();
+		}).then(function(res){
+			assert.equal(res.valueOf(), rentMoneyPerDay, "get rent money.");
+		}).then(function(){
+			smartLock.wantToRent({from: renter, value: totalRentMoney});
+		}).then(function(){
+			return smartLock.amIRentedThisRoom({from: renter});
+		}).then(function(res){
+			assert.equal(res.valueOf(), true, "renter rented this room successfully.");
+		}).then(function(){
+			return smartLock.canIOpenThisDoor();
+		}).then(function(res){
+			assert.equal(res.valueOf(), true, "");
 		});
 	});
 });

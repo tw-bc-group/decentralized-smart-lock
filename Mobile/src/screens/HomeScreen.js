@@ -18,33 +18,64 @@ const styles = StyleSheet.create({
   },
 });
 
+const CONNECTION = {
+  READY: {
+    value: 'READY',
+    text: 'Ready to connect.',
+  },
+  CONNECTING: {
+    value: 'CONNECTING',
+    text: 'Loading ...',
+  },
+  SUCCESS: {
+    value: 'SUCCESS',
+    text: 'The Blockchain is online!',
+  },
+  FAILED: {
+    value: 'FAILED',
+    text: 'Oops..something wrong with connection',
+  },
+};
+
 class HomeScreen extends React.Component {
   state = {
-    connection: 'Loading ...',
+    connection: CONNECTION.READY,
   };
 
   componentDidMount() {
-    this.web3.eth.net.isListening().then((isConnected) => {
-      this.setState({
-        connection: isConnected ?
-          'The Blockchain is online!' : 'Oops..something wrong with connection',
-      });
-    });
+    this.connect();
   }
 
-  host = 'http://10.16.82.48:8545';
-  web3 = new Web3(new Web3.providers.HttpProvider(this.host));
+  connect = () => {
+    this.setState({ connection: CONNECTION.CONNECTING });
+    if (this.web3 && this.web3.currentProvider) {
+      this.web3 = new Web3(this.web3.currentProvider);
+    } else {
+      this.web3 = new Web3(new Web3.providers.HttpProvider('http://172.20.10.3:8545'));
+    }
+    this.web3.eth.net.isListening().then((isConnected) => {
+      this.setState({
+        connection: isConnected ? CONNECTION.SUCCESS : CONNECTION.FAILED,
+      });
+    }).catch(() => {
+      this.setState({ connection: CONNECTION.FAILED });
+    });
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <Text>This is Home Screen.</Text>
         <Text>
-          {this.state.connection}
+          {this.state.connection.text}
         </Text>
         <Button
           title="Generate QR Code"
           onPress={() => this.props.navigation.navigate(ROUTE_NAMES.QR_CODE)}
+        />
+        <Button
+          title="Reconnect"
+          onPress={() => this.connect()}
         />
       </View>
     );

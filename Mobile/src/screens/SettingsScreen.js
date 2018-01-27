@@ -22,7 +22,7 @@ class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>This is QR Code Screen.</Text>
+        <Text>This is Settings Screen.</Text>
         <Text>{this.state.data}</Text>
         <Button
           title="Back"

@@ -4,17 +4,25 @@ import {
   Text,
   Button,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode';
 
 import blockchain from '../utilities/blockchain';
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  data: {
+    color: '#999',
+    marginHorizontal: 30,
+    marginVertical: 20,
   },
 });
 
@@ -27,11 +35,11 @@ class QRCodeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text>This is QR Code Screen.</Text>
-        <Text>{this.state.data}</Text>
         <QRCode
-          size={300}
+          size={SCREEN_WIDTH * 0.4}
           value={this.state.data}
         />
+        <Text style={styles.data}>{this.state.data}</Text>
         <Button
           title="Back"
           onPress={() => this.props.navigation.goBack()}

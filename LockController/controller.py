@@ -1,13 +1,14 @@
 from web3 import Web3, HTTPProvider, IPCProvider, eth, contract
 import pprint
 import json
-import pi_camera
+
+# import pi_camera
 
 lockAddress = "lockAddress"
 rentMontyPerDay = 1
 node_address = 'http://localhost:8545'
 w3 = Web3(HTTPProvider(node_address))
-contractAddress = '0x79dcc5302c368d53123b75ce5fc393744ebc8c68'
+contractAddress = '0xcd4ea7bb234224cda215014c6ec26600a34a7cb2'
 
 abi = [
     {
@@ -19,6 +20,20 @@ abi = [
             }
         ],
         "name": "isLandlord",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "bool"
+            }
+        ],
+        "payable": False,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": True,
+        "inputs": [],
+        "name": "canIOpenThisDoor",
         "outputs": [
             {
                 "name": "res",
@@ -129,16 +144,21 @@ abi = [
 
 lockContract = w3.eth.contract(address=contractAddress, contract_name='SmartLock', abi=abi)
 
+
 def verifyIsLockAvaliable():
     print(lockContract.call().isLockAvailiable())
 
 
-def verifyIsRenter():
-    codes = pi_camera.capture_img()
-    args = json.loads(codes, encoding='utf8')
-    
+verifyIsLockAvaliable()
+
+
+def verifyCanIOpenThisDoor():
+    # codes = pi_camera.capture_img()
+    # args = json.loads(codes, encoding='utf8')
+
     # waiting for contract update and change the method
-    return lockContract.call().verifyRenter(args.sig)
+    # return lockContract.call().verifyRenter(args.sig)
+    print(lockContract.call().canIOpenThisDoor())
 
 
-
+verifyCanIOpenThisDoor()

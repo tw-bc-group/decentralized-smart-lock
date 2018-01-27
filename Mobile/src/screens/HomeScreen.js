@@ -43,18 +43,18 @@ class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.connect();
+    // this.connect();
   }
 
   connect = () => {
     this.setState({ connection: CONNECTION.CONNECTING });
-    blockchain.connect().then((isConnected) => {
-      this.setState({
-        connection: isConnected ? CONNECTION.SUCCESS : CONNECTION.FAILED,
-      });
-    }).catch(() => {
-      this.setState({ connection: CONNECTION.FAILED });
-    });
+    // blockchain.connect().then((isConnected) => {
+    //   this.setState({
+    //     connection: isConnected ? CONNECTION.SUCCESS : CONNECTION.FAILED,
+    //   });
+    // }).catch(() => {
+    //   this.setState({ connection: CONNECTION.FAILED });
+    // });
   };
 
   render() {
@@ -62,7 +62,7 @@ class HomeScreen extends React.Component {
       <View style={styles.container}>
         <Text>This is Home Screen.</Text>
         <Text>
-          {this.state.connection.text}
+          {/*{this.state.connection.text}*/}
         </Text>
         <Button
           title="Settings"

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Web3 from 'web3';
 
 import { ROUTE_NAMES } from '../routes';
+import CONFIG from '../config.json';
 
 const styles = StyleSheet.create({
   container: {
@@ -51,7 +52,7 @@ class HomeScreen extends React.Component {
     if (this.web3 && this.web3.currentProvider) {
       this.web3 = new Web3(this.web3.currentProvider);
     } else {
-      this.web3 = new Web3(new Web3.providers.HttpProvider('http://172.20.10.3:8545'));
+      this.web3 = new Web3(new Web3.providers.HttpProvider(CONFIG.BLOCKCHAIN.ADDRESS));
     }
     this.web3.eth.net.isListening().then((isConnected) => {
       this.setState({

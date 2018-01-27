@@ -32,7 +32,6 @@ contract('SmartLock', function(accounts){
 		var rentMoneyPerDay = web3.toWei(1, 'ether');
 		var renter = accounts[1];
 		var totalRentMoney = web3.toWei(2, 'ether');
-		var invalidRenter = accounts[2];
 
 		return SmartLock.new().then(function(instance){
 			smartLock = instance;
@@ -61,7 +60,8 @@ contract('SmartLock', function(accounts){
 		var rentMoneyPerDay = web3.toWei(1, 'ether');
 		var renter = accounts[1];
 		var totalRentMoney = web3.toWei(2, 'ether');
-		var invalidRenter = accounts[2];
+		var sha3Msg = web3.toHex(web3.sha3("abc"));
+		var signedStr = web3.toHex(web3.eth.sign(renter, sha3Msg));
 
 		return SmartLock.new().then(function(instance){
 			smartLock = instance;
@@ -81,7 +81,7 @@ contract('SmartLock', function(accounts){
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "renter rented this room successfully.");
 		}).then(function(){
-			return smartLock.canIOpenThisDoor();
+			return smartLock.canIOpenThisDoor(sha3Msg, signedStr);
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "");
 		});

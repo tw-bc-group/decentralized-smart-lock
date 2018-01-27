@@ -24,8 +24,6 @@ contract SmartLock {
 		require(!isLandlord(validateAddress));
 		_; 
 	}
-	
-	
 
 	function isLandlord(address landlord) constant returns(bool res) {
 		return slContract.landlord == landlord;
@@ -69,10 +67,7 @@ contract SmartLock {
 		return addressNeedToVerify == slContract.renter;
 	}
 
-	function canIOpenThisDoor() constant returns(bool res) {
-		// address testAddress = 0x60320b8a71bc314404ef7d194ad8cac0bee1e331;
-		// return Decode.decode(0xf4128988cbe7df8315440adde412a8955f7f5ff9a5468a791433727f82717a6753bd71882079522207060b681fbd3f5623ee7ed66e33fc8e581f442acbcf6ab800);
-		return true;
+	function canIOpenThisDoor(bytes memory sha3Message, bytes memory signedStr) constant returns(bool res) {
+		return Decode.decode(sha3Message, signedStr) == slContract.renter;
 	}
-	
 }

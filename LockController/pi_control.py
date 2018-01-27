@@ -21,5 +21,6 @@ while True:
     except KeyboardInterrupt:
         print('Good bye')
         exit(0)
-    except:
+    except Exception as ex:
         print('some error ...')
+        print(ex)

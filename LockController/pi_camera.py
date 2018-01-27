@@ -18,7 +18,7 @@ def capture_img():
 
             if codes:
                 print('return QR codes: %s' % codes)
-                return ''.join(str(e) for e in codes)
+                return codes[0].decode('utf8')
 
 
 def analyse_img(img):

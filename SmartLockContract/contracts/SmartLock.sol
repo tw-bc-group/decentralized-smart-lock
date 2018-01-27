@@ -16,6 +16,8 @@ contract SmartLock {
 
 	event RegisterLandlord(address landlord, bytes32 lockAddress, uint256 rentMoneyPerDay);
 	event WantToRent(address renter, uint256 totalRentMoneyFromRenter, uint256 lastDate);
+	event TransferRentMoney(address landlord, uint256 totalRentMoneyFromRenter);
+	event ClearContract(address operator, uint256 now);
 
 	modifier onlyLockIsAvailable { 
 		require(isLockAvailiable());
@@ -91,12 +93,17 @@ contract SmartLock {
 	function transferRentMoney() onlyLandlord(msg.sender) onlyLockIsAvailable{
 		address landlord = msg.sender;
 		landlord.transfer(slContract.totalRentMoneyFromRenter);
+
+		TransferRentMoney(landlord, slContract.totalRentMoneyFromRenter);
+		
 		clearContract();
 	}
 	
-	function clearContract() returns(bool res) {
+	function clearContract() private returns(bool res) {
 		slContract.totalRentMoneyFromRenter = 0;
 		slContract.renter = msg.sender;
 		slContract.lastDate = 0;
+
+		ClearContract(msg.sender, now);
 	}
 }

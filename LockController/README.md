@@ -16,4 +16,8 @@ python3 pi_carema.py
 
 #### RSA encrypt, decrypt, sign and verify signature
 
-* crypt.py
+```
+./keys/gen-keys.sh
+
+python3 pi_crypt.py
+```

@@ -1,4 +1,4 @@
 picamera
 zbarlight
 pycrypto
-requests
+web3

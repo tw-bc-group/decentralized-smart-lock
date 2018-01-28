@@ -19,7 +19,9 @@ export default {
             web3 = new Web3(new Web3.providers.HttpProvider(CONFIG.BLOCKCHAIN.ADDRESS));
         }
         const message = web3.sha3(CONFIG.ACCOUNT.ADDRESS);
-        let sign = web3.eth.sign(CONFIG.ACCOUNT.ADDRESS, message);
+        let sign = web3.eth.sign(CONFIG.ACCOUNT.ADDRESS, message, function (res) {
+            console.log(res);
+        });
         return JSON.stringify({
             msg: message,
             sig: sign,

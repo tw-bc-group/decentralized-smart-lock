@@ -36,7 +36,7 @@ class QRCodeScreen extends React.Component {
       <View style={styles.container}>
         <Text>This is QR Code Screen.</Text>
         <QRCode
-          size={SCREEN_WIDTH * 0.4}
+          size={SCREEN_WIDTH * 0.9}
           value={this.state.data}
         />
         <Text style={styles.data}>{this.state.data}</Text>

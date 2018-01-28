@@ -28,17 +28,31 @@ const styles = StyleSheet.create({
 
 class QRCodeScreen extends React.Component {
   state = {
-    data: blockchain.getSignature(),
+    data: null,
+    status: 'Loading ...',
   };
+
+  componentDidMount() {
+    blockchain.getSignature().then((signatureText) => {
+      console.log(signatureText);
+      this.setState({ data: signatureText });
+    }).catch(() => {
+      this.setState({ status: 'Oops...something wrong in signing.' });
+    });
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <Text>This is QR Code Screen.</Text>
-        <QRCode
-          size={SCREEN_WIDTH * 0.9}
-          value={this.state.data}
-        />
+        {this.state.data ? (
+          <QRCode
+            size={SCREEN_WIDTH * 0.9}
+            value={this.state.data}
+          />
+        ) : (
+          <Text>{this.state.status}</Text>
+        )}
         <Text style={styles.data}>{this.state.data}</Text>
         <Button
           title="Back"

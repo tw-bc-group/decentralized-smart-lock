@@ -34,14 +34,7 @@ contract SmartLock {
 		require(amIRentedThisRoom());
 		_; 
 	}
-
-	function SmartLock() {
-		landlord = 0;
-		lockAddress = 0;
-		rentMoneyPerDay = 10;
-		renter = 0;
-	}
-
+	
 	function isLandlord(address landlordAddr) constant returns(bool res) {
 		return landlord == landlordAddr;
 	}
@@ -80,8 +73,7 @@ contract SmartLock {
 	}
 
 	function canIOpenThisDoor(bytes memory sha3Message, bytes memory signedStr) constant returns(bool res) {
-		// return Decode.decode(sha3Message, signedStr) == renter && now < lastDate;
-		return true;
+		return Decode.decode(sha3Message, signedStr) == renter && now < lastDate;
 	}
 	
 	function transferRentMoney() onlyLandlord(msg.sender) onlyLockIsAvailable{

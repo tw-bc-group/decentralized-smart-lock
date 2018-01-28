@@ -220,7 +220,13 @@ def verify_is_lock_avaliable():
 
 def can_open_door(args):
     print("call contract's canIOpenThisDoor")
-    return contract.call().canIOpenThisDoor(args.msg, args.sig)
 
+<< << << < HEAD
+return contract.call().canIOpenThisDoor(args.msg, args.sig)
 
 verify_is_lock_avaliable()
+== == == =
+# return contract.call().canIOpenThisDoor(args["msg"], args["sig"])
+return True
+>> >> >> > 3e2
+b697c2f1383046560bbf4b03856984289db1c

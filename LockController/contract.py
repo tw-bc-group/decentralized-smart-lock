@@ -220,10 +220,5 @@ def verify_is_lock_avaliable():
 
 def can_open_door(args):
     print("call contract's canIOpenThisDoor")
-<<<<<<< HEAD
     return contract.call().canIOpenThisDoor(args["msg"], args["sig"])
-=======
 
-
-verify_is_lock_avaliable()
->>>>>>> modify something

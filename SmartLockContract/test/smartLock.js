@@ -18,6 +18,10 @@ contract('SmartLock', function(accounts){
 			return smartLock.isLockAvailiable();
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "if lock has been registered and availiable.");
+		}).then(function(){
+			return smartLock.getRentMoneyPerDay();
+		}).then(function(res){
+			assert.equal(res.valueOf(), rentMoneyPerDay, "if rent money has been set.")
 		});
 	});
 
@@ -37,6 +41,10 @@ contract('SmartLock', function(accounts){
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "the room is availiable.");
 		}).then(function(){
+			return smartLock.getRentMoneyPerDay();
+		}).then(function(res){
+			assert.equal(res.valueOf(), rentMoneyPerDay, "get rent money.");
+		}).then(function(){
 			web3.eth.sendTransaction({from: renter, to: smartLock.address, value: totalRentMoney});
 		}).then(function(){
 			return smartLock.amIRentedThisRoom({from: renter});
@@ -53,6 +61,7 @@ contract('SmartLock', function(accounts){
 		var renter = accounts[1];
 		var totalRentMoney = web3.toWei(2, 'ether');
 		var sha3Msg = web3.sha3("abc");
+		// console.log(web3.version.api,'  231232131231231')
 		var signedStr = web3.eth.sign(renter, sha3Msg);
 
 		return SmartLock.new().then(function(instance){
@@ -62,6 +71,10 @@ contract('SmartLock', function(accounts){
 			return smartLock.isLockAvailiable();
 		}).then(function(res){
 			assert.equal(res.valueOf(), true, "the room is availiable.");
+		}).then(function(){
+			return smartLock.getRentMoneyPerDay();
+		}).then(function(res){
+			assert.equal(res.valueOf(), rentMoneyPerDay, "get rent money.");
 		}).then(function(){
 			smartLock.wantToRent({from: renter, value: totalRentMoney});
 		}).then(function(){

@@ -10,7 +10,6 @@ export default {
     } else {
       web3 = new Web3(new Web3.providers.HttpProvider(CONFIG.BLOCKCHAIN.ADDRESS));
     }
-    console.log(web3);
     return new Promise((resolve, reject) => {
       web3.net.getListening((error, result) => (error ? reject(error) : resolve(result)));
     });

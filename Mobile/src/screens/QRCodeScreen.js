@@ -34,7 +34,6 @@ class QRCodeScreen extends React.Component {
 
   componentDidMount() {
     blockchain.getSignature().then((signatureText) => {
-      console.log(signatureText);
       this.setState({ data: signatureText });
     }).catch(() => {
       this.setState({ status: 'Oops...something wrong in signing.' });

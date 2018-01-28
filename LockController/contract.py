@@ -1,7 +1,7 @@
 from web3 import Web3, HTTPProvider, contract
 
 node_address = 'http://192.168.8.111:8545'
-contractAddress = '0x8b2ebaba3d8801bf6fce0564de3230e6e1314dec'
+contractAddress = '0x9fbda871d559710256a2502a2517b794b482db40'
 
 w3 = Web3(HTTPProvider(node_address))
 
@@ -221,4 +221,7 @@ def verify_is_lock_avaliable():
 def can_open_door(args):
     print("call contract's canIOpenThisDoor")
     return contract.call().canIOpenThisDoor(args["msg"], args["sig"])
+<<<<<<< HEAD
 
+=======
+>>>>>>> fix

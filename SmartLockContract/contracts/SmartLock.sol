@@ -47,7 +47,7 @@ contract SmartLock {
 		return msg.sender == renter;
 	}
 
-	function getRentMoneyPerDay() constant returns(uint256 rentMoneyPerDay) {
+	function getRentMoneyPerDay() constant returns(uint256 res) {
 		return rentMoneyPerDay;
 	}
 

@@ -55,7 +55,7 @@ contract SmartLock {
 		landlord = msg.sender;
 		lockAddress = lockAddr;
 		rentMoneyPerDay = rentMoneyPD;
-		renter = msg.sender;
+		renter = 0;
 
 		RegisterLandlord(msg.sender, lockAddr, rentMoneyPD);
 	}

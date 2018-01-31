@@ -61,7 +61,6 @@ contract('SmartLock', function(accounts){
 		var renter = accounts[1];
 		var totalRentMoney = web3.toWei(2, 'ether');
 		var sha3Msg = web3.sha3("abc");
-		// console.log(web3.version.api,'  231232131231231')
 		var signedStr = web3.eth.sign(renter, sha3Msg);
 
 		return SmartLock.new().then(function(instance){
